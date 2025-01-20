@@ -1,3 +1,5 @@
+-- ● Obs.: É uma boa prática guardar os comandos utilizados para posterior reaproveitamento.
+-- 1) Dado o modelo lógico abaixo, crie as 4 tabelas correspondentes
 -- Tabela ALUNO
 CREATE TABLE aluno (
     matricula NUMERIC(6) PRIMARY KEY,
