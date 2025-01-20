@@ -40,3 +40,7 @@ CREATE TABLE departamento (
     cod NUMERIC PRIMARY KEY,
     descricao TEXT NOT NULL
 );
+
+-- FInalizado
+
+
