@@ -1,13 +1,16 @@
+
 -- Criação da tabela ALUNO
 CREATE TABLE aluno (
     matricula NUMERIC(6) PRIMARY KEY,
     nome VARCHAR(200) NOT NULL,
     email VARCHAR(100),
     telefone NUMERIC(10),
-    idade NUMERIC(3),
+    idade NUMERIC(3),                  
     dtnascimento DATE,
     cidade VARCHAR(100)
 );
+-- ALTER TABLE aluno ADD COLUMN email VARCHAR(100);
+-- ALTER TABLE aluno ADD COLUMN idade NUMERIC(3);
 
 -- Criação da tabela DISCIPLINA
 CREATE TABLE disciplina (
@@ -48,4 +51,9 @@ CREATE TABLE departamento (
     descricao VARCHAR(200) NOT NULL,
     sigla VARCHAR(10)
 );
+
+-- insert into aluno (matricula,nome,email,telefone,idade,dtnascimento,cidade)
+-- values (201527701,'ANDRESSA MOREIRA DA SILVA','teste@teste',NULL,NULL,'01-09-2009','PELOTAS');
+
+-- Inserçao nas tableas
 
