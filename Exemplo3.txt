@@ -1,0 +1,452 @@
+Como representar tipos de
+
+Dados no SQL
+
+● char, varchar, timestamp, date, time são textos/strings/alfanuméricos
+– São representados sempre entre aspas simples
+'teste' ' o l a ' ' 2123 '
+
+● int só aceita números inteiros
+
+123 567 789023
+
+● numeric aceita números inteiros e reais (com casas decimais)
+– Representação decimal segue formato inglês (ponto ao invés de vírgula).
+123.3454 565.2 0.34
+
+Ressalva sobre Java DB
+
+● Formato para inserir valores do tipo TIMESTAMP no
+Java DB é mais rigoroso do que o PostgreSQL
+● É necessário especificar ano,més,dia,hora,minuto e
+segundo, tudo dentro de aspas simples
+(PostgreSQL também aceita este formato)
+
+'aaaa-mm-dd hh-mm-ss'
+
+DML -> INSERT
+
+● Precisamos inserir linhas/registros/tuplas!! Como??
+– Usamos uma ferramenta visual, preenchendo em uma tela
+gráfica.
+● Prático para pequenas modificações
+– Usamos o comando INSERT.
+● Desenvolvedores usam scripts com diversos comandos.
+● Dentro dos códigos de Java, VB, Delphi, C#, etc
+
+INSERT INTO nomeTabela [ ( nomeColuna [, ...] ) ]
+VALUES ( { valores/expressões } [, ...] ) ;
+
+
+Então
+
+● Alguém (DBA ou Desenvolvedor) criou o Esquema
+
+ALUNO
+MATRICULA NOME TELEFONE CIDADE
+123 JOÃO 45332 PELOTAS
+345 MARIA 1199 PELOTAS
+
+EMAIL
+joao@teste
+maria@teste
+
+CREATE TABLE aluno (
+matricula NUMERIC(6),
+nome VARCHAR(200),
+email VARCHAR(100),
+telefone NUMERIC(10),
+cidade VARCHAR(100));
+
+● Desenvolvedores autorizados podem inserir registros
+na Instância
+
+INSERT INTO aluno ( matricula, nome, email, telefone,cidade )
+VALUES ( 345,'MARIA','maria@teste',1199,'PELOTAS' ) ;
+
+INSERT INTO aluno ( matricula, nome, email, telefone,cidade )
+VALUES ( 123,'JOÃO','joao@teste',45332,'PELOTAS' ) ;
+
+
+Como identificar registros?
+
+● Podemos executar os comandos abaixo, na nossa atual tabela ALUNO?
+
+INSERT INTO aluno ( matricula, nome, email, telefone,cidade )
+VALUES ( 123,'MARIA','maria@teste',1199,'PELOTAS' ) ;
+
+INSERT INTO aluno ( matricula, nome, email, telefone,cidade )
+VALUES ( 123,'JOÃO','joao@teste',45332.'PELOTAS' ) ;
+
+INSERT INTO aluno ( matricula, nome, email, telefone,cidade )
+VALUES ( 123,'JOSÉ','jose@teste',45332,'BAGÉ' ) ;
+INSERT INTO aluno ( matricula, nome, email, telefone,cidade )
+VALUES ( 123,'MARIA','maria@teste',1199,'PELOTAS' ) ;
+
+SIM !!!!
+
+● Não informamos ao SGBD nenhuma regra/restrição que proíba a
+duplicidade de registros e conteúdos
+
+Chave Primária / Primary Key
+
+● Os SGBDs relacionais possuem a capacidade de atribuir
+restrições aos campos de uma tabela.
+– Existem vários tipos de restrições ou constraints
+– Agora veremos apenas um tipo!
+● A restrição de CHAVE PRIMÁRIA ou PRIMARY KEY
+serve para garantir a identificação única de um registro
+dentro de uma tabela.
+
+ALUNO
+MATRICULA NOME TELEFONE CIDADE
+123 JOÃO 45332 PELOTAS
+345 MARIA 1199 PELOTAS
+123 MARIA 1199 PELOTAS
+
+
+Chaves
+
+●
+“É preciso ter uma maneira de especificar como as
+tuplas dentro de uma determinada relação são
+distinguidas. Isso é expresso em termos de seus
+atributos. Ou seja, os valores de atributo de uma tupla
+precisam ser tais que possam identificar unicamente a
+tupla. Em outras palavras, nenhum par de tuplas em
+uma relação pode ter exatamente o mesmo valor para
+todos os atributos.” [SILBERSCHATZ]
+
+Comando DDL para criar tabelas
+
+com Chave Primária
+
+● Sintaxe (básica com Primary Key):
+CREATE TABLE nometabela (
+campo1 tipo(n),
+campo2 tipo(n),
+campo3 tipo(n),
+PRIMARY KEY (campo2)
+);
+Ex:
+CREATE TABLE aluno (
+matricula NUMERIC(6),
+nome VARCHAR(200),
+email VARCHAR(100),
+telefone NUMERIC(10),
+cidade VARCHAR(100),
+PRIMARY KEY (matricula)
+);
+
+Comando DDL para alterar tabelas
+
+definindo a Chave Primária
+
+Manuais do PostgreSQL com todos os comandos
+http://www.postgresql.org/docs/manuals/
+http://www.postgresql.org/docs/9.3/static/sql-altertable.html
+
+● Sintaxe :
+ALTER TABLE nometabela
+ADD CONSTRAINT nomeconstraint
+PRIMARY KEY (campo);
+Ex:
+ALTER TABLE aluno
+ADD CONSTRAINT pkaluno
+PRIMARY KEY (matricula);
+
+ Agora não dá para repetir o
+
+campo MATRICULA
+
+Outras colunas/atributos não
+
+possuem restrições
+
+Chave Primária Composta
+
+● Tabelas podem ter apenas uma chave primária
+● As chaves primárias podem ter mais de 1 coluna
+– Neste caso são chaves primárias compostas
+● O Banco de Dados considera única a informação resultante de
+todas as colunas que fazem parte da chave
+
+CREATE TABLE matricula (
+matriculaaluno NUMERIC(6),
+coddisciplina NUMERIC(6),
+dtefetivado VARCHAR(100),
+PRIMARY KEY (matriculaaluno,coddisciplina)
+);
+
+SQL -> SELECT
+
+● A instrução SELECT recupera informações do banco
+de dados. Particionaremos o comando em três
+mecanismos que podem ser combinados entre si:
+– SELEÇÃO
+● Recurso de seleção no código para escolher as linhas/registros/tuplas
+que queremos obter de uma tabela
+
+– PROJEÇÃO
+● Usamos para escolher as colunas/atributos de uma tabela
+– JUNÇÃO
+● Recurso utilizado para reunir dados armazenados em mais de uma
+tabela, através de relacionamentos existentes entre eles.
+
+
+Seleção
+
+● Separar os registros/linhas/tuplas que são da cidade de PELOTAS;
+
+ALUNO
+MATRICULA NOME EMAIL TELEFONE CIDADE
+123 MARIA 1199 PELOTAS
+234 JOÃO 45332pelotas
+1JOSÉ 45332 BAGÉ
+3 MARIA 1199 PELOTAS
+126 12906 RIO GRANDE
+5 MARIA João 5433 PELOTAS
+10 PELÉ 112233cristal
+
+maria@teste
+joao@teste
+jose@teste
+maria@teste
+HELENa helena@teste.com
+mariajoao@teste
+pele@ucpel.tche.br
+
+● Separar os registros/linhas/tuplas em que a matricula seja 126;
+
+ALUNO
+MATRICULA NOME EMAIL TELEFONE CIDADE
+123 MARIA 1199 PELOTAS
+234 JOÃO 45332pelotas
+1JOSÉ 45332 BAGÉ
+3 MARIA 1199 PELOTAS
+126 12906 RIO GRANDE
+5 MARIA João 5433 PELOTAS
+10 PELÉ 112233cristal
+
+
+Projeção
+
+● Selecionar as colunas/atributos de matricula, nome e telefone, da tabela
+Aluno;
+
+ALUNO
+MATRICULA NOME EMAIL TELEFONE CIDADE
+123 MARIA 1199 PELOTAS
+234 JOÃO 45332pelotas
+1JOSÉ 45332 BAGÉ
+3 MARIA 1199 PELOTAS
+126 12906 RIO GRANDE
+5 MARIA João 5433 PELOTAS
+10 PELÉ 112233cristal
+
+maria@teste
+joao@teste
+jose@teste
+maria@teste
+HELENa helena@teste.com
+mariajoao@teste
+pele@ucpel.tche.br
+
+● Selecionar as colunas/atributos de cidade da tabela Aluno;
+
+ALUNO
+MATRICULA NOME EMAIL TELEFONE CIDADE
+123 MARIA 1199 PELOTAS
+234 JOÃO 45332pelotas
+1JOSÉ 45332 BAGÉ
+3 MARIA 1199 PELOTAS
+126 12906 RIO GRANDE
+5 MARIA João 5433 PELOTAS
+10 PELÉ 112233cristal
+
+Junção
+
+● Reuni dados de mais de uma tabela.
+– Não vamos nos preocupar com isto ainda!!
+
+TABELA 1
+CAMPO1 CAMPO2 CAMPO3 CAMPO4 CAMPO5
+
+TABELA 2
+CAMPO1 CAMPO2 CAMPO3
+
+Instrução SELECT Básica
+
+SELECT [DISTINCT] {*,nomeColuna [as apelido]}
+FROM nomeTabela;
+
+● Após o SELECT especificamos as colunas (Projeção)
+● Após o FROM especificamos a tabela (Junção)
+
+Selecionando todas as colunas
+e linhas de uma única tabela
+
+● Usamos * para representar todas as colunas possíveis
+
+SELECT *
+FROM nomeTabela;
+
+Selecionando Colunas
+
+Específicas
+
+SELECT nomeCol1, nomeCol2, ...
+FROM nomeTabela;
+
+Definindo um Apelido para a
+
+Coluna
+
+SELECT nomeCol1 AS apelido, nomeCol2, nomeCol3 AS apelido ...
+FROM nomeTabela;
+
+Expressões Aritméticas
+
+● Colunas numéricas e de tempo (timestamp,date,time)
+podem usar/realizar operações aritméticas
+● Soma (+) Subtração (-) Multiplicação (*) Divisão (/)
+● A precedência das operações segue a regra básica da matemática.
+
+
+Concatenação
+
+● Strings/Textos podem ser concatenados!!
+● Dois caracteres || (PIPE) permitem esta operação
+
+Exibição de Linhas Duplicadas
+
+● O padrão (default) das
+consultas é exibir todas as
+linhas sempre! Mesmo as
+duplicadas.
+
+● A palavra DISTINCT na
+cláusula SELECT elimina
+as linhas duplicadas
+
+O valor Nulo (NULL)
+
+● O valor NULL é um valor especial nos SGBDs, e
+significa que o atributo/coluna:
+
+● NÃO POSSUE VALOR!
+● É DESCONHECIDO!
+● NÃO É APLICÁVEL!
+
+● Um valor NULL não é o mesmo que um valor zero ou
+um espaço em branco!!!
+● NULL nunca é igual a nada
+
+NULL não é igual a NULL
+
+Inserindo registros com valores nulos!
+
+● Quais colunas/atributos
+receberam valores
+nulos??
+
+Valores NULL
+
+● Os valores
+marcados são
+valores nulos!
+
+IMPORTANTE
+Chaves Primárias não podem ser nulas!
+
+Exercícios DDL/DML
+
+● Cria ou recrie as tabelas abaixo (todas possuem PK – coluna vermelho)
+
+ALUNO
+Coluna Tipo
+MATRICULA numero
+NOME texto
+texto
+TELEFONE numero
+IDADE numero
+data
+CIDADE texto
+EMAIL
+
+DTNASCIMENTO
+
+DISCIPLINA
+Coluna Tipo
+numero
+NOME texto
+TURMA numero
+numero
+numero
+
+MATRICULA
+Coluna Tipo
+MATRICULAALUNO numero
+CODDISCIPLINA numero
+DTEFETIVADO data
+
+DEPARTAMENTO
+Coluna Tipo
+COD numero
+DESCRICAO texto
+SIGLA texto
+
+Chave primária composta
+
+Inserir
+
+● Popule a tabela aluno (fazer os inserts) baseado nas informações abaixo
+– Preencha os outros campos também, mas deixe alguns com null
+
+insert into aluno (matricula,nome,email,telefone,idade,dtnascimento,cidade)
+values (201527701,'ANDRESSA MOREIRA DA SILVA','teste@teste',NULL,NULL,'01-09-2009','PELOTAS');
+
+Popular as outras tabelas
+
+● Coloque pelo menos 10 (dez) registros nas tabelas Departamento, Funcionario, Disciplina,
+Matricula
+● Obs.: Guarde os scripts (texto dos comandos) para uso futuro!
+
+Seleções - Projeção
+
+1) Selecione todos os registros das tabelas Funcionario
+2) Selecione somente a matricula e o nome dos registros da tabela Aluno
+3) Na tabela Funcionario, selecione o código, o nome, o salario atual e o salário
+atual + 10 %, colocando o apelido/alias nesta ultima coluna de “novosalario”
+4) Selecione a coluna sigla na tabela Departamento, sem repetir registros
+iguais.
+5) Selecione a descricao e a sigla na tabela Departamento, sem repetir
+registros iguais. Apelide a coluna descricao de “nomedepartamento” e sigla
+de “codigoreduzido”
+6) Selecione todas as idades dos alunos, sem repeti-las
+7) Selecione a matricula, o nome, a idade e a idade + 2 apelidando esta ultima
+coluna de “provavel_idade_formado”
+8) Faça retornar o seguinte texto oriundo da tabela Aluno
+Aluno: xxxxxx nascido em: xxxxx estará com a idade aproximada de xx ao
+se formar!
+
+Extra: Acesso ao PostgreSQL em
+terminal Caracter
+
+● O PostgreSQL possue uma ferramenta própria para acesso aos seus
+esquemas de banco de dados.
+
+psql
+● Como chegamos ao terminal caracter
+– Fazendo um ssh (putty) para o servlab.ucpel.tche.br, usuario aluno, senha: qpwo
+● Como usar:
+– psql NomeDaBase
+– Para ver as tabelas:
+● \d
+– Para ver a estrutura de uma tabela:
+● \d nomeDaTabela
+– Pode fazer select, insert, delete, update, terminando o comando sempre com “;”
+– Para sair:
+● \q
+
+Exemplo psql
