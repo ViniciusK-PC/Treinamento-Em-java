@@ -41,6 +41,7 @@ CREATE TABLE departamento (
     descricao TEXT NOT NULL
 );
 
+
 -- FInalizado
 
 
