@@ -76,5 +76,6 @@ UPDATE Funcionario
 SET salario = salario * 1.15
 WHERE coddepartamento = 20;
 
+
 Finalizado
 
