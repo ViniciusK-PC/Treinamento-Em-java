@@ -50,4 +50,5 @@ CREATE TABLE departamento (
     sigla VARCHAR(10)
 );
 
+
 -- FInalizado
