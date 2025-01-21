@@ -339,4 +339,5 @@ cada cargo dos funcionários. Coloque label nas colunas como Máximo, Médio, Me
 18) Faça uma consulta que exiba o número do gerente e o menor pagamento salarial sob a supervisão deste gerente.
 19) Crie uma consulta que exiba
 
+
 Finalizado
