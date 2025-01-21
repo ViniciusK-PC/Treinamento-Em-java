@@ -255,3 +255,88 @@ GROUP BY
 É possível agrupar os resultados em vários subgrupos.
 ● Na tabela abaixo, queremos obter os maiores salários, por cargo dentro
 de cada departamento.
+
+Várias colunas na cláusula
+
+GROUP BY
+
+SELECT cargo,coddepartamento,MAX(salario)
+FROM funcionario
+GROUP BY coddepartamento,cargo
+ORDER BY 2;
+
+Cuidado
+
+● Qualquer coluna ou expressão na lista SELECT que não seja
+uma função de grupo deve estar na cláusula GROUP BY.
+
+SELECT cidade,MIN(idade)
+FROM aluno;
+
+SELECT cidade,MIN(idade)
+FROM aluno
+GROUP BY cidade;
+
+Misturando
+
+SELECT UPPER(cidade) as Cidade,MAX(idade) as Idade
+FROM aluno
+WHERE telefone is NOT null
+GROUP BY UPPER(cidade);
+
+Mas e se quisermos restringir os grupos??
+Por exemplo, queremos só os grupos, onde a idade é maior ou igual à 18.
+
+Cláusula HAVING
+
+● HAVING consegue restringir grupos
+– As linhas são selecionadas
+– A função de grupo é aplicada
+– Os grupos que forem aprovados pela cláusula HAVING são exibidos.
+
+SELECT UPPER(cidade) as Cidade,MAX(idade) as Idade
+FROM aluno
+WHERE telefone is NOT null
+GROUP BY UPPER(cidade)
+HAVING MAX(idade)>=18
+ORDER BY 2 DESC;
+
+SELECT [DISTINCT] {*,nomeColuna [as apelido]}
+FROM nomeTabela
+[WHERE condição(ções)]
+[GROUP BY {expr,expr, ...}]
+[HAVING condições do grupo]
+[ORDER BY {coluna, expr, ...} [ASC|DESC]];
+
+Exercícios
+
+1) Crie uma consulta para exibir a data atual
+2) Crie uma consulta para informar o dia da semana atual (segunda, terça, quarta)
+3) Exiba o código do funcionário, o nome, o salário e o aumento salarial de 15% expresso como número inteiro
+4) Adicione a consulta anterior uma coluna que conterá o salário novo menos o salário antigo.
+5) Exiba o nome do funcionário, a data de admissão e a data de efetivação, que é seis meses após a admissão.
+6) Para cada funcionário exiba o nome do mesmo e calcule o número de meses entre a hoje e a sua data de
+admissão. Ordene a consulta pelo número de meses. Arredonde para inteiro o número de meses.
+7) Crie uma consulta que produza a seguinte frase: O <nomefunc> recebe R$ <salario> mensalmente, mas deseja
+receber <salário * 4>. Coloque um label de “sonho” a coluna.
+8) Faça um select, que retorne o nome do funcionário com a primeira letra em maiúscula e o número de letras que o
+nome contem. Para todos os funcionários cujos os nomes começam com J ou M. Coloque em ordem decrescente
+pelo número de letras
+9) Exiba a admissão e o dia (segunda, terça, quarta, ...) em que o funcionário começou a trabalhar. Ordene pelo dia
+da semana.
+10) Faça uma consulta pelo nome do aluno e o telefone, informando “Sem telefone”, para os alunos em que o telefone
+é null.
+11) Faça uma consulta que exiba o nome do funcionário e a quantia de salário através de asteriscos. Cada asterisco
+representa R$ 100,00. Coloque em ordem decrescente de salário.
+12) Exiba o nome do aluno e a faixa de idade dele. De acordo com a seguinte especificação.
+0-18 = Categoria A 19-30 = Categoria B 31-61 = Categoria C Maior 61 = Categoria D
+13) Exiba o maior salário, o médio, o menor e a soma de todos os salários de todos os funcionários.
+14) Arredonde os resultados da consulta anterior para números inteiros.
+15) Selecione o número de funcionários totais e o número de funcionários que possuem gerentes.
+16) Crie uma consulta para exibir o maior salário, o salário médio, o menor salário e a soma de todos os salários para
+cada cargo dos funcionários. Coloque label nas colunas como Máximo, Médio, Menor e Soma.
+17) Exiba o número de funcionários por cargo.
+18) Faça uma consulta que exiba o número do gerente e o menor pagamento salarial sob a supervisão deste gerente.
+19) Crie uma consulta que exiba
+
+Finalizado
