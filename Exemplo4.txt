@@ -12,3 +12,145 @@ que queremos obter de uma tabela
 – JUNÇÃO
 ● Recurso utilizado para reunir dados armazenados em mais de uma
 tabela, através de relacionamentos existentes entre eles.
+
+Formato Select
+
+SELECT PROJEÇÃO
+FROM TABELA
+WHERE SELEÇÃO
+
+Limitando Linhas de um
+Seleção
+● Os selects até agora realizados buscam todas as linhas
+da tabela solicitada.
+● Restringimos as linhas acrescentado a cláusula WHERE
+SELECT [DISTINCT] {*,nomeColuna [as apelido]}
+FROM nomeTabela
+WHERE condição(ções);
+Após o SELECT especificamos as colunas
+Após o FROM especificamos a tabela
+Após o WHERE especificamos uma ou mais condições
+
+
+Condição (ções)
+
+● Composta por nomes de colunas, expressões,
+constantes e operadores de comparação
+● Fundamentalmente as condições resultam em um
+valor booleano (verdadeiro/falso).
+● O SGBD avalia a condição solicitada, linha a linha na
+tabela.
+– Todas as linhas, em que a condição resultar em verdadeiro
+serão devolvidas pelo SGBD.
+– As linhas, onde a condição resultar em falso, serão
+descartadas pelo SGBD, e não serão retornadas.
+
+Seleção
+● Separar os registros/linhas/tuplas que são da cidade de PELOTAS;
+SELECT *
+FROM aluno
+WHERE cidade='PELOTAS'
+
+ALUNO
+MATRICULA NOME EMAIL TELEFONE CIDADE
+123 MARIA 1199 PELOTAS
+234 JOÃO 45332pelotas
+1JOSÉ 45332 BAGÉ
+3 MARIA 1199 PELOTAS
+126 12906 RIO GRANDE
+5 MARIA João 5433 PELOTAS
+10 PELÉ 112233cristal
+
+Separar os registros/linhas/tuplas em que a matricula seja 126;
+SELECT *
+FROM aluno
+WHERE matricula=126
+ALUNO
+
+MATRICULA NOME EMAIL TELEFONE CIDADE
+123 MARIA 1199 PELOTAS
+234 JOÃO 45332pelotas
+1JOSÉ 45332 BAGÉ
+3 MARIA 1199 PELOTAS
+126 12906 RIO GRANDE
+5 MARIA João 5433 PELOTAS
+10 PELÉ 112233cristal
+
+Seleção e Projeção
+
+● Podemos combinar PROJEÇÃO e SELEÇÃO
+● Separar matricula, nome e email dos registros/linhas/tuplas que são da
+cidade de PELOTAS;
+SELECT matricula,nome,email
+FROM aluno
+WHERE cidade='PELOTAS'
+
+ALUNO
+MATRICULA NOME EMAIL
+123 MARIA
+234 JOÃO
+1JOSÉ
+3 MARIA
+126
+5 MARIA João
+10 PELÉ
+
+maria@teste
+joao@teste
+jose@teste
+maria@teste
+HELENa helena@teste.com
+mariajoao@teste
+pele@ucpel.tche.br
+
+String de Caracteres e Datas
+
+● As strings de caracteres e valores de data devem aparecer entre
+aspas simples
+● Os valores de caracteres fazem distinção entre maiúsculas e
+minúsculas e os valores de data devem estar dentro dos formatos
+exigidos pelo SGBD.
+● O formato default (padrão), varia de SGBD para SGBD, sendo que o
+DBA pode mudar o valor default do SGBD e o desenvolvedor pode
+mudar o valor default da sessão.
+
+Quais linhas retornam?
+
+SELECT *
+FROM aluno
+WHERE dtnascimento > '2000-01-01 00:00:00';
+
+Operadores de Comparação
+
+OPERADOR SIGNIFICADO
+= Igual a
+> Maior do que
+>= Maior do que ou igual a
+< Menor do que
+<= Menor do que ou igual a
+<> Diferente de
+
+BETWEEN ... AND ... Entre dois valores(inclusive)
+IN (lista) Em um lista de valores
+LIKE Um padrão de caracteres
+IS NULL É um valor nulo
+
+● Comparam uma expressão a outra expressão
+– WHERE expr operador valor
+– Ex:
+● WHERE dtnascimento = '2000-01-01 00:00:00';
+
+ou
+
+● WHERE idade BETWEEN 18 AND 21
+
+ou
+
+● WHERE idade IN (5,8,2)
+
+ou
+
+● WHERE nome = 'PELÉ'
+
+
+
