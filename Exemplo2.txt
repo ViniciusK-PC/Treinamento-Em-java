@@ -1,0 +1,312 @@
+SGBD
+
+● Sistema Gerenciador de Banco de Dados
+– É aceitável usar apenas Banco de Dados
+
+● Porém
+– Banco de Dados é diferente de Base de Dados
+
+Objetivos dos SGBDs
+
+● Eliminar redundância e inconsistência de dados
+– no processamento tradicional de arquivos, muitos usuários mantêm
+seus próprios arquivos para manipular suas aplicações de
+processamento, que pode provocar o armazenamento de
+informações redundantes;
+
+● Compartilhamento de Dados
+– agrupar os dados através de um único ponto de acesso;
+– fornecer controle de concorrência para assegurar que atualizações
+simultâneas resultem em modificações corretas.
+
+Objetivos dos SGBDs
+
+● Restrições de Acesso Multiusuário
+– quando múltiplos usuários compartilham uma base de dados, é
+comum que alguns usuários não tenham acesso a todas as
+informações da base de dados. Um SGBD fornece um subsistema
+de autorização e segurança para especificar acessos e restrições.
+
+● Atomicidade
+– garantir 100% da operação ou reverter tudo para a situação inicial.
+– tratar o trabalho como indivisível
+– ou tudo ou nada
+
+Objetivos dos SGBDs
+
+● Restrições de integridade
+– A forma mais elementar de restrição de integridade é a especificação
+do tipo de dado de cada item.
+
+● Disponibilizar múltiplas interfaces
+– linguagens de consulta para usuários ocasionais
+– interfaces de linguagem de programação para programadores de
+aplicações
+– formulários e interfaces dirigidas por menus para usuários comuns,
+etc.
+– Linguagem SQL – Structured Query Language
+
+Objetivos dos SGBDs
+● Mecanismos avançados de backup e recuperação
+– perder todo o hardware e recuperar através de backup e logs a
+situação de minutos antes do crash.
+
+● Distribuição de Bases
+– Mais de um SGBD controlando a mesma base de dados
+
+● Maior velocidade no desenvolvimento de aplicações
+– na verdade, passou-se a fazer coisas mais complexas, onde o uso
+de arquivos era inviável.
+
+Atividades e Profissionais envolvidos
+
+em um SGBD
+
+● Administrador de Banco de Dados – DBA
+– Instala, administra e controla os SGBDs da organização;
+– Performance do Sistema;
+● Recursos de hardware (processador/memória/disco);
+● Otimização das consultas;
+– Cria/modifica/apaga usuários do SGBD.
+● Desenvolvedores de Aplicações
+– Usam os recursos dos SGBDs, perante autorização do DBA;
+– Criam estruturas referentes a base de dados.
+● Usuário Finais
+– Usam as aplicações que acessam os SGBDs;
+– Alguns usuários avançados acessam diretamente o SGBD,
+perante autorização do DBA.
+
+Visão dos dados
+
+● Um sistema de banco de dados é uma coleção de dados
+inter-relacionados e um conjunto de programas que
+permitem aos usuários acessar e modificar esses dados.
+[Silberschatz]
+● Uma importante finalidade de um Sistema Gerenciador de
+Banco de Dados é fornecer aos usuários uma visão
+abstrata dos dados, ou seja, o sistema oculta certos
+detalhes de como os dados são armazenados e mantidos.
+[Silberschatz]
+
+Abstração de Dados
+
+● Nível Físico ou Interno
+– Descreve em detalhes estruturas de dados complexas
+– Normalmente é especifico de cada SGBD e o DBA pode customizar
+algumas partes
+
+● Nível Lógico ou Conceitual
+– Omite detalhes de armazenamento, concentrando-se nos detalhes
+dos dados em si.
+– Os desenvolvedores concentram sua atuação neste nível.
+● Nível de Visão ou Externo
+– Nível de abstração mais alto, descrevendo apenas parte do banco
+de dados e concentrando-se na informação em si.
+
+
+Abstração de Dados
+
+Nível de Visão
+Nível Lógico 1 Nível Lógico 2  Nível Lógico n
+Nível Lógico
+Nível Físico
+
+Instâncias e Esquemas
+
+● Esquema
+– O projeto geral do banco de dados é o esquema;
+– Os esquemas raramente são modificados.
+– São subdivididos em
+● Esquema Físico
+● Esquema Lógico
+
+● Instância
+– Os bancos de dados mudam com o tempo, à medida que as
+informações são inseridas e excluídas. A coleção das informações
+armazenadas no banco de dados em um determinado momento é
+uma instância do banco de dados.
+
+estrutura de um banco de dados está o Modelo
+de Dados.[Silberschatz]
+– Uma coleção de ferramentas conceituais para descrever dados,
+relações de dados, semântica de dados e restrições de
+consistência.
+– Um modelo de dados oferece uma maneira de descrever o projeto
+de um banco de dados no nível físico, lógico e de visão.
+
+Modelo de Dados Hierárquico
+
+● Nesse modelo de dados, os dados são estruturados em hierarquias ou
+árvores. Os nós das hierarquias contêm ocorrências de registros, onde cada
+registro é uma coleção de campos (atributos), cada um contendo apenas uma
+informação. O registro da hierarquia que precede a outros é o registro-pai, os
+outros são chamados de registros-filhos.
+● O relacionamento entre um registro-pai e vários registros-filhos possui
+cardinalidade 1:N. Os dados organizados segundo este modelo podem ser
+acessados segundo uma seqüência hierárquica com uma navegação do topo
+para as folhas e da esquerda para a direita.
+
+Modelo de Dados em Rede
+
+● Extensão ao modelo hierárquico, eliminando o conceito de hierarquia e
+permitindo que um mesmo registro estivesse envolvido em várias
+associações. No modelo em rede, os registros são organizados em
+grafos onde aparece um único tipo de associação (set) que define uma
+relação 1:N entre 2 tipos de registros: proprietário e membro. Desta
+maneira, dados dois relacionamentos 1:N entre os registros A e D e
+entre os registros C e D é possível construir um relacionamento M:N
+entre A e D.
+
+Modelo de Dados Relacional
+
+● Tem como base a teoria dos conjuntos e da álgebra relacional e foi resultado
+de um estudo teórico nos anos 70, realizado por Codd, um pesquisador da
+IBM.
+● Usa uma coleção de tabelas para representar os dados e as relações entre
+eles. Cada tabela possui diversas colunas, e cada coluna possui um nome
+único na tabela.
+● Modelo mais utilizado atualmente.
+
+Modelo de Dados Orientado a Objeto
+
+● O desenvolvimento dos Sistemas de Gerenciamento de Banco de
+Dados Orientado a Objetos (SGBDOO) teve origem na combinação de
+idéias dos modelos de dados tradicionais e de linguagens de
+programação orientada a objetos.
+● Noções de encapsulamento, métodos (funções), propriedades
+(atributos) e identidade do objeto são parte do modelo.
+
+Módulos comuns em SGBDs
+
+● Um sistema de banco de dados é particionado em
+módulos que lidam com cada uma das responsabilidades
+do sistema geral.
+– Gerenciador de autorização e integridade
+– Gerenciador de transação
+– Gerenciador de arquivo
+– Gerenciador de buffer
+– Processador de Consulta
+● Interpreta
+● Compila
+● Avalia
+
+SGBDs
+● A interface para gerenciar e acessar o SGBD não possui
+nenhum vinculo com o SGBD!
+
+PGAdminIII não é o PostgreSQL!!
+
+Netbeans acessando PostgreSQL
+
+Netbeans acessando PostgreSQL
+
+Netbeans acessando PostgreSQL
+
+Linguagens de um SGBD Relacional
+
+● Linguagem de Definição de Dados (DDL)
+– Linguagem utilizada para construir o esquema do banco de dados;
+– Criar, alterar, apagar tabelas, colunas de tabelas, etc;
+– Autorizar/restringir acesso, etc;
+– Não é muito padronizada.
+
+● Linguagem de Manipulação de Dados (DML)
+– Linguagem utilizada para acessar e manipular os dados da instância;
+– Seleção, Inserção, Alteração, Exclusão
+– Bastante padronizada.
+
+Banco de Dados Relacional
+
+● SGBDs baseados no modelo relacional, usam
+conjuntos de Tabelas para representar os dados e as
+relações entre eles.
+● Tabelas contém uma ou mais Colunas
+O que é o esquema?
+E a instância?
+
+Tabela
+
+● Objeto criado para armazenar os dados fisicamente
+● Os dados são armazenados em linha (registros) e
+colunas (campos)
+● Os dados de uma tabela normalmente descrevem um
+assunto tal como clientes, vendas, aluno, disciplina,
+etc.
+
+Interligando Dados
+
+● Ou seja
+– As tabelas são os conjuntos de Dados
+– Cada tabela armazena informação coerente com o conjunto
+– Cada linha da tabela representam um registro de dados
+– Cada coluna da linha representa parte dos dados do registro
+● Interligamos conjuntos através das informações de suas
+colunas.
+
+Quem trabalha no departamento RH?
+Quem é o funcionário 345?
+Qual o departamento do funcionário 345?
+
+Comando DDL para criar tabelas
+
+● Sintaxe básica (iremos no futuro acrescentar recursos):
+CREATE TABLE nometabela (
+campo1 tipo(n),
+campo2 tipo(n),
+campo3 tipo(n));
+
+● Ex:
+CREATE TABLE aluno (
+matricula NUMERIC(6),
+nome VARCHAR(200),
+email VARCHAR(100),
+telefone NUMERIC(10));
+
+Tipos de dados mais comuns
+
+● char(n)
+– texto de tamanho fixo n;
+● varchar(n)
+– texto de tamanho variável n;
+● int
+– valor numérico inteiro;
+● numeric(p,d) ou numeric(n)
+– p = número de dígitos total
+– d = número de dígitos após a virgula;
+– Ex: numeric(10,3) pode armazenar de 0 a 9999999,999
+● float(n)
+– número de ponto flutuante, com precisão de n dígitos;
+● timestamp, date, time
+– tipos para controle de datas e horas.
+
+Comando DDL para alterar tabelas
+
+Manuais do PostgreSQL com todos os comandos
+http://www.postgresql.org/docs/manuals/
+http://www.postgresql.org/docs/9.3/static/sql-altertable.html
+
+● Sintaxe básica:
+ALTER TABLE nometabela ADD COLUMN campo1 tipo(n);
+
+● Ex:
+ALTER TABLE aluno ADD COLUMN sexo char(1);
+
+Comando DDL para apagar tabelas
+
+● Sintaxe básica para apagar uma tabela que não
+possua dependências:
+DROP TABLE nometabela;
+
+● Ex:
+
+DROP TABLE aluno;
+
+Usando o PGAdminIII
+Usando o Netbeans
+
+Exercícios 
+Obs.: É uma boa prática guardar os comandos utilizados para posterior reaproveitamento.
+1) Dado o modelo lógico abaixo, crie as 4 tabelas correspondentes
+Exercícios
+2) Altere as tabelas já criadas, para ficar de acordo com o modelo lógico abaixo
+3) Remova do SGBD as 5 tabelas criadas anteriormente
