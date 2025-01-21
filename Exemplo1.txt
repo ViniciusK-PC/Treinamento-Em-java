@@ -178,3 +178,5 @@ comuns utilizados nos SGBDs
 5)Quais os links para download e quais as limitações dos
 SGBDs da Oracle, IBM e Microsotf para utilização sem
 custo.
+
+Finalizado
