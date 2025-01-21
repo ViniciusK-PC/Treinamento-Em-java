@@ -1,0 +1,273 @@
+Valores Default nas Colunas das
+
+Tabelas
+
+● Podemos definir valores nas colunas, para quando não
+colocarmos explicitamente algum valor, o próprio banco de
+dados irá colocar um valor default (padrão).
+
+CREATE TABLE aluno (
+matricula NUMERIC(6),
+nome VARCHAR(200),
+email VARCHAR(100) DEFAULT 'NÃO POSSUI EMAIL',
+telefone NUMERIC(10),
+idade NUMERIC(3),
+dtnascimento timestamp,
+cidade VARCHAR(100),
+PRIMARY KEY (matricula));
+
+INSERT INTO aluno (matricula,nome)
+VALUES (5643,'DUNGA');
+
+
+Segurança <> Integridade
+
+● Segurança está relacionada a proteção dos dados contra o acesso
+não autorizado
+● Integridade está relacionada a proteção quanto a perda de
+consistência.
+● Garantia de segurança implica em Medidas de segurança que devem
+ser tomadas em diversos níveis:
+– Físico
+– Humano
+– Sistema Operacional
+– SGBD
+
+Restrições de Integridade
+
+● Garantem que as mudanças feitas no banco de dados por usuários autorizados não
+resultam em uma perda de consistência dos dados. Portanto as restrições protegem
+contra danos acidentais no banco de dados.
+● Chave Primária (PK) e Chave Estrangeira (FK)
+● NOT NULL
+● UNIQUE
+● CHECK (CONDIÇÕES)
+
+CREATE TABLE FUNCIONARIO (
+COD NUMERIC(8),
+NOME VARCHAR(200) NOT NULL,
+CARGO VARCHAR(200),
+DTCONTRATACAO TIMESTAMP,
+RG VARCHAR(10),
+ATIVO CHAR(1) NOT NULL DEFAULT 'S',
+CODGERENTE NUMERIC(8),
+SALARIO NUMERIC(12,2),
+CODDEPARTAMENTO NUMERIC (6),
+PRIMARY KEY (COD),
+FOREIGN KEY (CODDEPARTAMENTO) REFERENCES DEPARTAMENTO(COD),
+FOREIGN KEY (CODGERENTE) REFERENCES FUNCIONARIO(COD),
+UNIQUE (RG),
+CHECK ( ATIVO = 'S' OR ATIVO = 'N') );
+
+Chave Primaria/Primary Key
+
+● A restrição de CHAVE PRIMÁRIA ou PRIMARY KEY serve para
+garantir a identificação única de um registro dentro de uma tabela.
+● Uma Chave Primária Composta é uma Chave que contém mais de
+uma Coluna da mesma Tabela.
+
+CREATE TABLE FUNCIONARIO (
+COD NUMERIC(8),
+NOME VARCHAR(200) NOT NULL,
+CARGO VARCHAR(200),
+DTCONTRATACAO TIMESTAMP,
+RG VARCHAR(10),
+ATIVO CHAR(1) NOT NULL DEFAULT 'S',
+CODGERENTE NUMERIC(8),
+SALARIO NUMERIC(12,2),
+CODDEPARTAMENTO NUMERIC (6),
+PRIMARY KEY (COD),
+FOREIGN KEY (CODDEPARTAMENTO) REFERENCES DEPARTAMENTO(COD),
+FOREIGN KEY (CODGERENTE) REFERENCES FUNCIONARIO(COD),
+UNIQUE (RG),
+CHECK ( ATIVO = 'S' OR ATIVO = 'N') ); CREATE TABLE aluno_disciplina (
+
+matricula numeric(6),
+coddisciplina numeric(6),
+PRIMARY KEY (matricula, coddisciplina));
+Chaves Primárias não
+aceitam valores Null
+
+Chave Estrangeira / Foreign Key
+● A restrição de CHAVE ESTRANGEIRA ou FOREIGN KEY(FK) serve para garantir
+que uma campo em uma tabela deve obrigatóriamente estar associado a um valor
+existente em uma Chave Primária, (normalmente em outra tabela).
+
+CREATE TABLE FUNCIONARIO (
+COD NUMERIC(8),
+NOME VARCHAR(200) NOT NULL,
+CARGO VARCHAR(200),
+DTCONTRATACAO TIMESTAMP,
+RG VARCHAR(10),
+ATIVO CHAR(1) NOT NULL DEFAULT 'S',
+CODGERENTE NUMERIC(8),
+SALARIO NUMERIC(12,2),
+CODDEPARTAMENTO NUMERIC (6),
+PRIMARY KEY (COD),
+FOREIGN KEY (CODDEPARTAMENTO) REFERENCES DEPARTAMENTO(COD),
+FOREIGN KEY (CODGERENTE) REFERENCES FUNCIONARIO(COD),
+UNIQUE (RG),
+CHECK ( ATIVO = 'S' OR ATIVO = 'N') );
+
+
+Chave Estrangeira / Foreign Key
+
+CREATE TABLE aluno_disciplina (
+matricula numeric(6),
+coddisciplina numeric(6),
+PRIMARY KEY (matricula, coddisciplina),
+FOREIGN KEY (matricula) REFERENCES aluno(matricula),
+FOREIGN KEY (coddisciplina) REFERENCES disciplina(cod)
+);
+
+NOT NULL
+
+● A coluna não aceita valores NULL
+
+CREATE TABLE FUNCIONARIO (
+COD NUMERIC(8),
+NOME VARCHAR(200) NOT NULL,
+CARGO VARCHAR(200),
+DTCONTRATACAO TIMESTAMP,
+RG VARCHAR(10),
+ATIVO CHAR(1) NOT NULL DEFAULT 'S',
+CODGERENTE NUMERIC(8),
+SALARIO NUMERIC(12,2),
+CODDEPARTAMENTO NUMERIC (6),
+PRIMARY KEY (COD),
+FOREIGN KEY (CODDEPARTAMENTO) REFERENCES DEPARTAMENTO(COD),
+FOREIGN KEY (CODGERENTE) REFERENCES FUNCIONARIO(COD),
+UNIQUE (RG),
+CHECK ( ATIVO = 'S' OR ATIVO = 'N') );
+
+UNIQUE
+
+● A Coluna exige a existência de um valor único.
+CREATE TABLE FUNCIONARIO (
+COD NUMERIC(8),
+NOME VARCHAR(200) NOT NULL,
+CARGO VARCHAR(200),
+DTCONTRATACAO TIMESTAMP,
+RG VARCHAR(10),
+ATIVO CHAR(1) NOT NULL DEFAULT 'S',
+CODGERENTE NUMERIC(8),
+SALARIO NUMERIC(12,2),
+CODDEPARTAMENTO NUMERIC (6),
+PRIMARY KEY (COD),
+FOREIGN KEY (CODDEPARTAMENTO) REFERENCES DEPARTAMENTO(COD),
+FOREIGN KEY (CODGERENTE) REFERENCES FUNCIONARIO(COD),
+UNIQUE (RG),
+CHECK ( ATIVO = 'S' OR ATIVO = 'N') );
+
+...,
+RG VARCHAR(10) UNIQUE,
+
+
+CHECK
+
+● Valida o campo de acordo com regras especificadas.
+● Sempre que a coluna receber uma inserção ou alteração, o banco vai
+antes testar a condição. Somente no caso da condição ser
+VERDADEIRA é que a operação ira acontecer.
+
+CREATE TABLE FUNCIONARIO (
+COD NUMERIC(8),
+NOME VARCHAR(200) NOT NULL,
+CARGO VARCHAR(200),
+DTCONTRATACAO TIMESTAMP,
+RG VARCHAR(10),
+ATIVO CHAR(1) NOT NULL DEFAULT 'S',
+CODGERENTE NUMERIC(8),
+SALARIO NUMERIC(12,2),
+CODDEPARTAMENTO NUMERIC (6),
+PRIMARY KEY (COD),
+FOREIGN KEY (CODDEPARTAMENTO) REFERENCES DEPARTAMENTO(COD),
+FOREIGN KEY (CODGERENTE) REFERENCES FUNCIONARIO(COD),
+UNIQUE (RG),
+CHECK ( ATIVO = 'S' OR ATIVO = 'N'));
+
+Lembrando
+
+● Quando tentamos violar uma Restrição através dos comandos
+INSERT, DELETE ou UPDATE, o SGBD não irá realizar a
+operação e retornará uma mensagem de erro.
+
+CREATE TABLE departamento(
+cod NUMERIC(6),
+descricao VARCHAR(200) NOT NULL,
+sigla VARCHAR(100),
+PRIMARY KEY (cod));
+
+Gerar Valores Automaticamente
+
+● Útil para usar em campos de chaves primarias (pk)
+● Duas formas no PostgreSQL :
+– Uso de Sequências (Sequence)
+– Tipo Serial na coluna
+
+create table Livro (
+cod serial,
+titulo varchar(100),
+descricao varchar(300),
+primary key(cod)
+);
+
+Seqüencias
+● Gera números exclusivos automaticamente
+● Geralmente usado para criar um valor de chave primária.
+● Bem mais flexível que o tipo Serial
+● Objeto separado da Tabela
+● Sintaxe básica:
+– CREATE SEQUENCE nomeSequencia;
+● Como usar:
+– nextval('nomeSequencia'); -- Retorna novo/próximo valor
+– currval('nomeSequencia'); -- Retorna valor atual
+● currval só pode ser chamado após o nextval ser invocado.
+
+CREATE SEQUENCE seqAluno;
+
+INSERT INTO aluno (matricula,nome)
+VALUES (NEXTVAL('seqAluno'),'BEBETO');
+
+select NEXTVAL('seqAluno');
+
+Sequências
+
+dblucianomertins=> CREATE SEQUENCE seqAluno;
+CREATE SEQUENCE
+dblucianomertins=> select NEXTVAL('seqAluno');
+nextval
+---------
+1
+(1 row)
+dblucianomertins=> select NEXTVAL('seqAluno');
+nextval
+---------
+2
+(1 row)
+dblucianomertins=> select NEXTVAL('seqAluno');
+nextval
+---------
+3
+(1 row)
+dblucianomertins=>
+
+CREATE SEQUENCE seqDepartamento;
+
+CREATE TABLE departamento(
+cod numeric(6) default nextval('seqDepartamento'),
+descricao varchar(200),
+sigla varchar(100),
+PRIMARY KEY (cod));
+
+INSERT INTO departamento (descricao,sigla)
+VALUES ('VENDAS','VND');
+
+Exercícios
+
+1) Coloque restrições nas tabelas já utilizadas na base
+(Aluno,Matricula,Disciplina,Funcionario,Departamento)
+● Duas formas de fazer:
+● Apagar as tabelas já existentes e alterar os parametros no Create
+Alterar a estrutura das tabelas com o comando Alter Table
+● http://www.postgresql.org/docs/9.3/static/sql-altertable.html
