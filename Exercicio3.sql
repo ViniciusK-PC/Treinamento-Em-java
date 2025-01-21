@@ -57,3 +57,5 @@ CREATE TABLE departamento (
 
 -- Inserçao nas tableas
 
+
+
