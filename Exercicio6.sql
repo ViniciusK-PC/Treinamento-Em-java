@@ -87,4 +87,4 @@ ALTER TABLE departamento
     ADD CONSTRAINT unique_descricao UNIQUE (descricao),
     ADD CONSTRAINT chk_sigla CHECK (LENGTH(sigla) = 3);
 
-
+-- Finalizado
