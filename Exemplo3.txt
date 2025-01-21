@@ -450,3 +450,5 @@ psql
 ● \q
 
 Exemplo psql
+
+Finalizado
