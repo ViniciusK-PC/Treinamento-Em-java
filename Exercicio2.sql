@@ -4,9 +4,9 @@
 CREATE TABLE aluno (
     matricula NUMERIC(6) PRIMARY KEY,
     nome VARCHAR(200) NOT NULL,
-    email VARCHAR(100),        -- Coluna adicionada
+    email VARCHAR(100),
     telefone NUMERIC(10),
-    idade NUMERIC(3),          -- Coluna adicionada
+    idade NUMERIC(3),
     dtnascimento DATE,
     cidade VARCHAR(100)
 );
@@ -19,6 +19,7 @@ CREATE TABLE disciplina (
     numAlunos NUMERIC,
     cargaHoraria NUMERIC
 );
+
 
 -- Criação da tabela MATRICULA
 CREATE TABLE matricula (
@@ -49,6 +50,3 @@ CREATE TABLE departamento (
     descricao VARCHAR(200) NOT NULL,
     sigla VARCHAR(10)
 );
-
-
--- FInalizado
