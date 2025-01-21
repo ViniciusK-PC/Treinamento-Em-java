@@ -135,5 +135,4 @@ WHERE EXTRACT(YEAR FROM dtcontratacao) >= 2005
 GROUP BY EXTRACT(YEAR FROM dtcontratacao)
 ORDER BY ano;
 
-
 -- Finalizado 
