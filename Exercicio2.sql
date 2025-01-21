@@ -4,10 +4,8 @@
 CREATE TABLE aluno (
     matricula NUMERIC(6) PRIMARY KEY,
     nome VARCHAR(200) NOT NULL,
-    email VARCHAR(100),
     telefone NUMERIC(10),
-    idade NUMERIC(3),
-    dtnascimento DATE,
+    dtnascimento TIMESTAMP,
     cidade VARCHAR(100)
 );
 
