@@ -404,6 +404,6 @@ gerente seja o 7529, ordenado pelo código do departamento de forma decrescente
 Dica 1: No jargão da informática, atualizar significa modificar dados da tabela. Que comando utilizar?
 Dica 2: Em cada questão, separe o que é PROJEÇÃO e o que é SELEÇÃO, para então montar o comando.
 
-
+Finalizado
 
 
