@@ -152,5 +152,258 @@ ou
 
 ● WHERE nome = 'PELÉ'
 
+Operador BETWEEN
+SELECT *
+FROM aluno
+WHERE idade BETWEEN 16 AND 21;
+
+Operador IN
+
+SELECT *
+FROM aluno
+WHERE idade IN (12,5,16,43);
+
+
+Operador LIKE
+
+● Use o operador LIKE para executar pesquisas curinga de valores
+em strings
+● Podemos comparar cadeias de caracteres utilizando padrões de
+comparação (wildcard) para um ou mais caracteres. O caracter
+percentual (%) substitui zero, um ou mais caracteres e sublinha (_)
+substitui um caracter.
+
+SÍMBOLO DESCRIÇÃO
+% significa zero, um ou muitos caracteres
+_ significa um único caracter
+
+Quais linhas retornam?
+
+SELECT nome
+FROM aluno
+WHERE nome LIKE 'MAR%';
+
+SELECT nome
+FROM aluno
+WHERE nome LIKE '_A%';
+
+SELECT nome
+FROM aluno
+WHERE nome LIKE '%';
+
+Operador IS
+
+● NULL NUNCA é igual a NULL
+● NULL não é igual a nada!
+● Um valor nulo significa que o valor não está disponível,
+não-atribuído, desconhecido ou não-aplicável
+● O operador IS testa valores que são nulos.
+WHERE telefone IS NULL
+
+Quais linhas retornam?
+
+SELECT nome,matricula
+FROM aluno
+WHERE telefone IS NULL;
+
+Operadores Lógicos
+
+OPERADOR SIGNIFICADO
+AND Retorna TRUE se todas as condições forem verdadeiras
+OR Retorna TRUE se pelo menos uma das condições forem verdadeiras
+NOT Retorna TRUE se a condição seguinte for FALSE
+ou FALSE se a condição seguinte for TRUE
+SELECT [DISTINCT] {*,nomeColuna [as apelido]}
+FROM nomeTabela
+WHERE condição(ções);
+
+Condições = expr AND expr OR expr AND NOT expr ...
+
+O Operador NOT pode ser utilizado também com outros operadores SQL, como o
+BETWEEN, LIKE e o IS
+... WHERE idade NOT IN (5,7,9,11)
+... WHERE matricula NOT BETWEEN 1000 AND 2000
+... WHERE nome NOT LIKE ('_A%')
+... WHERE telefone IS NOT NULL
+
+Quais linhas retornam?
+
+SELECT email,nome,matricula
+FROM aluno
+WHERE nome LIKE 'MAR%'
+AND idade >=18;
+
+SELECT matricula
+FROM aluno
+WHERE idade >=18
+AND cidade = 'PELOTAS'
+AND telefone IS NOT NULL ;
+
+Regras de Precedência
+
+ORDEM DE AVALIAÇÃO OPERADOR
+
+1 Todos os operadores de comparação
+2 NOT
+3 AND
+4 OR 
+
+● Regras de precedência podem ser reestruturadas
+usando parênteses!
+
+Que problema isto pode dar?
+
+Faça um select onde retorne todas os registros onde a cidade é PELOTAS ou
+CRISTAL e que os alunos tenham mais de 20 anos de idade.
+
+BARBADA??
+
+SELECT *
+FROM aluno
+WHERE cidade = 'PELOTAS'
+OR cidade = 'CRISTAL'
+AND idade > 20;
+
+NÃO! Deu problema de procedência!!
+
+SELECT *
+FROM aluno
+WHERE cidade = 'PELOTAS'
+OR cidade = 'CRISTAL'
+AND idade > 20;
+
+SELECT *
+FROM aluno
+WHERE (cidade = 'PELOTAS' OR cidade = 'CRISTAL')
+
+Order By
+
+● Classifica as linhas em ordem crescente ou decrescente;
+● Só pode haver um Order By por Select;
+
+SELECT [DISTINCT] {*,nomeColuna [as apelido]}
+FROM nomeTabela
+[WHERE condição(ções)]
+[ORDER BY {coluna, expr, ...} [ASC|DESC]];
+
+● ORDER BY- especifica a ordem em que as linhas recuperadas são exibidas
+● ASC - ordena as linhas na ordem crescente (default)
+● DESC - ordena as linhas na ordem decrescente
+
+Order By
+
+SELECT email,nome,matricula
+FROM aluno
+WHERE nome LIKE 'MAR%'
+AND idade >=18
+ORDER BY cidade ASC;
+
+SELECT *
+FROM aluno
+WHERE (cidade = 'PELOTAS' OR cidade = 'CRISTAL')
+AND idade > 20
+ORDER BY idade;
+
+SELECT nome
+FROM aluno
+WHERE nome LIKE '_A%'
+ORDER BY matricula DESC;
+
+Podemos usar o Apelido (ALIAS) da coluna como referência
+
+SELECT telefone,nome, dtnascimento AS quandoNasceu
+FROM aluno
+WHERE telefone IS NOT NULL
+ORDER BY quandoNasceu;
+
+Podemos usar o número da coluna que será
+retornada como referência
+
+SELECT cidade, telefone,nome,
+FROM aluno
+ORDER BY 2;
+
+Classificando por várias colunas
+● A cláusula ORDER BY permite várias colunas
+
+SELECT telefone,nome, dtnascimento, matricula
+FROM aluno
+ORDER BY nome,dtnascimento DESC;
+
+SELECT telefone,nome, dtnascimento, matricula
+FROM aluno
+ORDER BY nome,dtnascimento ASC;
+
+Atualizando Registros/Linhas/Tuplas
+
+● UPDATE é a cláusula que consegue fazer atualizações
+nos registros das tabelas
+
+UPDATE nomeTabela
+SET coluna = valor [, coluna = valor, ...]
+[WHERE condição (ções)];
+
+Atualizando Registros/Linhas/Tuplas
+
+UPDATE aluno
+SET dtnascimento='1900-04-21 00:00:00', cidade= 'TURUÇU', telefone = 84104000
+
+Quantos e quais registros serão atualizados?
+
+UPDATE aluno
+SET idade=23
+WHERE matricula=123
+
+UPDATE aluno
+SET idade=86
+WHERE matricula=333
+
+Removendo Registros/Linhas/Tuplas
+
+● DELETE é a cláusula que consegue remover registros
+das tabelas
+
+DELETE FROM nomeTabela
+[WHERE condição (ções)];
+
+
+Removendo Registros/Linhas/Tuplas
+
+DELETE FROM aluno;
+
+Quantos registros serão removidos/deletados?
+
+DELETE FROM aluno
+WHERE matricula=1432 DELETE aluno
+WHERE matricula=3
+
+
+Exercícios
+
+1) Selecione todos os alunos que não possuem telefone e coloque em alguns a informação do telefone
+2) Atualize os alunos, aumentando em um ano a idade de todos os alunos que nasceram depois de 01/01/1980.
+3) Atualize as disciplinas, deixando todas com carga horária igual a 60.
+4) Crie uma consulta para exibir o nome e o salário dos funcionários que recebem mais de R$ 800,00
+5) Crie uma consulta para exibir o nome do funcionário e o número do departamento para o código do funcionário
+459
+6) Exiba o nome e o salário de todos os funcionários cujos salários não estejam na faixa entre R$ 950,00 e R$
+2300,00
+7) Exiba o nome do funcionário. o cargo e a data dos funcionários admitidos entre 20 de fevereiro de 2004 e 1 de
+maio de 2007
+8) Exiba o nome do funcionário e o número do departamento de todos os funcionários dos departamentos 10 e 30,
+por ordem alfabética de nome
+9) Liste o nome e o salário dos funcionários que recebem mais de R$ 1500,00 e que estão nos departamentos 10 ou
+30. Nomeie as colunas Nome e Salário, para Funcionário e Salário do Mês.
+10) Exiba o nome e a data de admissão de cada funcionário admitido em 2004
+11) Exiba o nome e o cargo de cada funcionário que não possua gerente
+12) Exiba os nomes de todos os funcionários que possuem um A na segunda letra de seus nomes
+13) Exiba todos os funcionários que possuem duas letras A em seus nomes e estão no departamento 30 ou seu
+gerente seja o 7529, ordenado pelo código do departamento de forma decrescente
+14) Premie, aumentando o salário em R$ 300,00, de todos os funcionários que ganham menos de R$ 700,00
+15) De um aumento de 15% aos funcionários do departamento 20
+Dica 1: No jargão da informática, atualizar significa modificar dados da tabela. Que comando utilizar?
+Dica 2: Em cada questão, separe o que é PROJEÇÃO e o que é SELEÇÃO, para então montar o comando.
+
+
 
 
