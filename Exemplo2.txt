@@ -310,3 +310,5 @@ Obs.: É uma boa prática guardar os comandos utilizados para posterior reaprove
 Exercícios
 2) Altere as tabelas já criadas, para ficar de acordo com o modelo lógico abaixo
 3) Remova do SGBD as 5 tabelas criadas anteriormente
+
+Finalizado
