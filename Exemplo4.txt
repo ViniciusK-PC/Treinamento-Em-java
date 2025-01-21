@@ -1,0 +1,14 @@
+SQL -> SELECT
+
+● A instrução SELECT recupera informações do banco
+de dados. Possue três mecanismos que podem ser
+combinados entre si:
+– SELEÇÃO
+● Recurso de seleção no código para escolher as linhas/registros/tuplas
+que queremos obter de uma tabela
+
+– PROJEÇÃO
+● Usamos para escolher as colunas/atributos de uma tabela
+– JUNÇÃO
+● Recurso utilizado para reunir dados armazenados em mais de uma
+tabela, através de relacionamentos existentes entre eles.
