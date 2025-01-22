@@ -187,4 +187,4 @@ SELECT f.nome AS nome_funcionario, g.nome AS nome_gerente
 FROM funcionario f
 LEFT JOIN funcionario g ON f.codgerente = g.cod;
 
-
+Finalizado
