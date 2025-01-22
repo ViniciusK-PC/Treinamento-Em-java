@@ -65,3 +65,5 @@ BD 3 C
 Algoritm e Prog 17 A
 Algoritm e Prog 5 B
 Algoritm e Prog 2 C
+
+Finalizado
