@@ -1,0 +1,338 @@
+SQL -> SELECT
+
+● A instrução SELECT recupera informações do banco
+de dados. Possue três mecanismos que podem ser
+combinados entre si:
+– SELEÇÃO
+● Recurso de seleção no código para escolher as linhas/registros/tuplas
+que queremos obter de uma tabela
+
+– PROJEÇÃO
+● Usamos para escolher as colunas/atributos de uma tabela
+– JUNÇÃO
+● Recurso utilizado para reunir dados armazenados em mais de uma
+tabela, através de relacionamentos existentes entre eles.
+
+Produto Cartesiano
+
+● Na Matemática, dados dois conjuntos X e Y, o produto cartesiano (ou
+produto direto) dos dois conjuntos (escrito como X × Y) é o conjunto de todos
+os pares ordenados cujo primeiro elemento pertence a X e o segundo, a Y.
+
+SELECT [DISTINCT] {*,nomeColuna [as apelido]}
+FROM nomeTabela1, nomeTabela2, nomeTabela3
+[WHERE condição(ções)]
+[GROUP BY {expr,expr, ...}]
+[HAVING condições do grupo]
+[ORDER BY {coluna, expr, ...} [ASC|DESC]];
+
+Produto Cartesiano no SGBD
+
+X
+SELECT *
+FROM funcionario,departamento;
+
+Dados de várias tabelas
+
+● Fundamental nos sistemas é relacionar dados de forma
+estrutural, para gerar informações coerentes e significativas.
+
+
+Como montar Relacionamentos?
+
+● No slide anterior a cardinalidade era de 1 para n e vice-versa.
+– Para cada departamento temos vários funcionários
+– Um funcionário tem um único departamento.
+● Mas e no caso do Aluno com a Disciplina?
+– Um aluno pode estar matriculado em várias disciplinas
+– Uma disciplina pode ter vários alunos
+
+Solução
+
+● É necessário uma terceira tabela para montar o relacionamento
+
+create table aluno_disciplina (
+matricula numeric(6),
+coddisciplina numeric(6),
+primary key(matricula,coddisciplina));
+
+● O SGBD Relacional não tem entendimento, nem dá significado
+para a utilizade desta tabela.
+● Nós HUMANOS sabemos o porquê!
+
+Solução
+
+
+Cardinalidade e Direcionalidade
+
+nos SGBDs Relacionais
+
+● 1 para 1
+● 1 para N
+● N para N
+
+● Bidirecional sempre!
+– Ex.
+● Dos alunos chegamos nas disciplinas
+● Das disciplinas chegamos nos alunos
+
+Tipos de Junção
+
+● Junção Idêntica
+● Junção Não-Idêntica
+● Junção Externa
+● Autojunção
+
+Junção Idêntica
+
+● Quando duas ou mais tabelas possuem colunas com
+valores que devem ser iguais.
+
+Junção Idêntica no SELECT
+
+SELECT [DISTINCT] {*,nomeColuna [as apelido]}
+FROM tabela1 INNER JOIN tabela2 ON tabela1.colunaX=tabela2.colunaY
+[WHERE condição(ções)]
+[GROUP BY {expr,expr, ...}]
+[HAVING condições do grupo]
+[ORDER BY {coluna, expr, ...} [ASC|DESC]];
+
+Junção Idêntica no SQL em N tabelas
+
+SELECT *
+FROM aluno INNER JOIN aluno_disciplina ON aluno.matricula = aluno_disciplina.matricula
+INNER JOIN disciplina ON aluno_disciplina.coddisciplina = disciplina.cod;
+
+Misturando
+
+SELECT *
+FROM aluno INNER JOIN aluno_disciplina ON aluno.matricula = aluno_disciplina.matricula
+INNER JOIN disciplina ON aluno_disciplina.coddisciplina = disciplina.cod
+WHERE disciplina.cargahoraria=60;
+
+Apelido nas Tabelas
+
+SELECT aluno.matricula, aluno.nome, telefone, disciplina.nome,cargahoraria
+FROM aluno INNER JOIN aluno_disciplina ON aluno.matricula = aluno_disciplina.matricula
+INNER JOIN disciplina ON aluno_disciplina.coddisciplina = disciplina.cod
+WHERE aluno.telefone IS NOT NULL
+ORDER BY disciplina.nome;
+
+SELECT a.matricula, a.nome, a.telefone, d.nome,d.cargahoraria
+FROM aluno AS a INNER JOIN aluno_disciplina AS ad ON a.matricula = ad.matricula
+INNER JOIN disciplina AS d ON ad.coddisciplina = d.cod
+WHERE a.telefone IS NOT NULL
+ORDER BY d.nome;
+
+Junção Idêntica (Inner Join)
+
+● Outra forma de fazer a junção identica?
+
+Junção Não-Idêntica
+
+● Quando nenhuma coluna da tabela X correspondem diretamente
+a uma coluna da tabela Y
+● Por exemplo, se quisermos categorizar os salários dos
+Funcionarios dentro de Categorias Salariais (Faixa).
+
+CREATE TABLE CATEGORIASALARIO (
+COD NUMERIC(3),
+MENOR NUMERIC(12,2),
+MAIOR NUMERIC(12,2),
+CATEGORIA CHAR(1),
+PRIMARY KEY (COD));
+
+SELECT f.nome,f.salario,cs.categoria
+FROM funcionario AS f, categoriasalario AS cs
+WHERE f.salario BETWEEN cs.menor AND cs.maior;
+
+Junção Externa (Outer Join)
+
+● A Junção Idêntica descarta as linhas que não possuem
+correspondência direta entre as tabelas.
+● Mas as vezes precisamos de todas as informações de uma
+determinada tabela, mesmo quando não a ligação direta.
+● Por exemplo:
+– Um select que apresente o nome do departamento e o nome do funcionário
+ligado ao seu departamento.
+● Podemos querer obter todos os departamentos, mesmo quando não
+possuem funcionários;
+● Podemos querer obter todos os funcionários, mesmo os que não estão
+em nenhum departamento.
+
+– A junção idêntica descarta os departamentos sem funcionários e os
+funcionários sem departamento.
+
+Junção Externa (Outer Join)
+
+● Dividido em:
+– LEFT JOIN
+– RIGHT JOIN
+
+SELECT [DISTINCT] {*,nomeColuna [as apelido]}
+FROM tabela1 LEFT JOIN tabela2 ON tabela1.colunaX=tabela2.colunaY
+[WHERE condição(ções)]
+[GROUP BY {expr,expr, ...}]
+[HAVING condições do grupo]
+[ORDER BY {coluna, expr, ...} [ASC|DESC]];
+
+SELECT [DISTINCT] {*,nomeColuna [as apelido]}
+FROM tabela1 RIGHT JOIN tabela2 ON tabela1.colunaX=tabela2.colunaY
+[WHERE condição(ções)]
+[GROUP BY {expr,expr, ...}]
+[HAVING condições do grupo]
+[ORDER BY {coluna, expr, ...} [ASC|DESC]];
+
+Exemplo
+
+SELECT d.descricao,f.nome
+FROM departamento AS d LEFT JOIN funcionario AS f ON d.cod = f.coddepartamento;
+
+SELECT d.descricao,f.nome
+FROM departamento AS d RIGHT JOIN funcionario AS f ON d.cod = f.coddepartamento;
+
+Auto Junção ou Auto-Relacionamento
+
+● Algumas vezes é necessário unir a tabela a ela mesmo.
+● Por exemplo:
+– O tabela Funcionario possui uma coluna com a informação do código do Gerente.
+– Queremos uma consulta que obtenha a seguinte frase:
+fulanodetal trabalha sobre a gerência de fulanodetal
+– As informações necessárias estão todas na tabela Funcionário. Mas é necessário
+relacionar a tabela funcionario com ela mesma!
+SELECT func.nome ||' trabalha sobre a gerência de ' || ger.nome AS FRASE
+FROM funcionario AS func INNER JOIN funcionario AS ger ON func.codgerente = ger.cod;
+
+Operações de Conjuntos
+
+●As operações de conjunto podem ser aplicadas
+sobre diversos selects!
+●A única restrição é que as consultas devem ter a
+mesma quantidade e mesmo tipo de campos como
+retorno para efetuar esses comandos.
+●As operações são:
+● União – UNION
+● Interseção – INTERSECT
+● Diferença – EXCEPT ou MINUS
+
+Union
+
+●Retorna a união de dois ou mais conjuntos.
+● UNION – remove as linhas duplicadas
+● UNION ALL – não remove as linhas duplicadas
+
+Sintaxe
+SELEÇÃO1
+UNION [ALL]
+SELEÇÃO2;
+
+conjunto1
+
+conjunto2
+
+SELECT valor
+FROM conjunto1
+UNION
+SELECT descricao
+FROM conjunto2;
+
+SELECT valor
+FROM conjunto1
+UNION ALL
+SELECT descricao
+FROM conjunto2;
+
+SELECT cod,valor
+FROM conjunto1
+UNION
+SELECT codigo,descricao
+FROM conjunto2;
+
+Intersect
+
+●Retorna apenas os elementos idênticos
+Sintaxe
+
+conjunto1
+
+conjunto2
+
+SELECT valor
+FROM conjunto1
+INTERSECT
+SELECT descricao
+FROM conjunto2;
+
+SELECT cod,valor
+FROM conjunto1
+INTERSECT
+SELECT codigo,descricao
+FROM conjunto2;
+
+Except
+
+●Elimina do primeiro conjunto, os valores também existentes no
+segundo conjunto.
+Sintaxe
+
+conjunto1
+
+conjunto2
+
+SELECT valor
+FROM conjunto1
+EXCEPT
+SELECT descricao
+FROM conjunto2;
+
+SELECT cod,valor
+FROM conjunto1
+EXCEPT
+SELECT codigo,descricao
+FROM conjunto2;
+
+Exercícios
+
+1) Faça uma consulta que exiba o nome do funcionário e do departamento de todos os funcionários.
+2) Mostre todos os cargos dos funcionários lotados nos departamentos com sigla na CTB.
+3) Mostre o número de alunos matriculados por disciplinas
+4) Mostre o nome do funcionário e o nome do departamento dos funcionários que possuem um A em seus nomes.
+5) Faça uma consulta que retorne todos os funcionários que trabalham em departamentos situados no Rio de Janeiro e que o salario seja
+maior que R$ 1500,00.
+6) Retorne o nome do aluno e a carga de horas total das disciplinas que ele esta matriculado. Ordene pelo nome do aluno.
+7) Crie uma consulta para exibir o nome do departamento, a sigla, o número de funcionários e o salário médio de todos os funcionários
+neste departamento.
+8) Retorne o nome do aluno e a carga de horas total das disciplinas que ele esta matriculado. Ordene pelo nome do aluno.
+9) Monte uma consulta que informe a faixa salarial dos funcionários, de acordo com a tabela do slide 4. Em seguida faça um select com o
+número de funcionários por faixa salarial
+10) Crie uma tabela faixaNivel, onde os alunos com idade de 15 à 20 são nível A, 21 à 25 nível B, 25 à 30 nível C e acima nível D. Faça
+uma consulta informando o nome do aluno e o nível em que ele se encontra.
+11) Faça uma consulta para retornar todos os nomes de disciplinas e o número de alunos matriculados. Lembrando que se a disciplina não
+possuir aluno, deve informar 0 (zero).
+12) Faça uma consulta para retornar o nome do aluno e a disciplina matriculada. Todos os alunos devem aparecer, mesmo se não estiver
+matriculado em nenhuma disciplina.
+13) Faça retornar o nome do gerente e o nome do funcionário O funcionario que não possuir gerente deve aparecer também.
+14) Reproduza os selects dos slides 23,24 e 25
+15) Faça uma consulta que retorne os nomes dos funcionários e os nomes dos alunos, ordenados de forma decrescente. Os nomes
+duplicados devem aparecer
+16) A mesma consulta acima, sem duplicar nomes.
+17) Faça retornar na mesma coluna o nome do aluno e o nome da disciplina sem repetições de nomes.
+18) Faça um único select, que reproduzam os inserts existentes nas tabelas Funcionário e Aluno, gerando o resultado no formato de scripts
+para serem executados em outra base de dados.
+
+Resolvendo um Problema!
+
+● As vezes precisamos obter os dados de uma tabela para
+inserirmos em outra. Por exemplo:
+– Precisamos recriar a tabela, alterando a estrutura, e o banco não possui um
+comando DDL que atenda a necessidade.
+
+● Podemos fazer um select na tabela, que retorne uma coluna
+apresentando o insert necessário! Para isto utilizamos
+concatenação de Strings.
+
+SELECT 'INSERT INTO departamento (cod,descricao,sigla) VALUES (' ||
+cod || ',''' || descricao || ''',''' || sigla || ''');' AS comando
+FROM departamento;
+
+Finalizado
