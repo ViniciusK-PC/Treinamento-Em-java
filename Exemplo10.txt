@@ -1,0 +1,204 @@
+Introdução a Transações
+
+● SGBDs são em geral multi-usuários
+– processam simultaneamente operações disparadas por vários
+usuários
+● deseja-se alta disponibilidade e tempo de resposta pequeno
+– execução intercalada de conjuntos de operações
+● exemplo: enquanto um processo X faz I/O, outro processo Y é
+selecionado para execução
+
+● Operações são chamadas transações
+
+Transação
+
+● Unidade lógica de processamento em um SGBD
+● Composta de uma ou mais operações que incluem,
+excluem ou alteram as informações das tabelas.
+– seus limites podem ser determinados em SQL
+● De forma abstrata e simplificada, uma transação pode
+ser encarada como um conjunto de operações de
+leitura(read) e escrita(write) de dados
+
+read(A)
+A := A – 50
+write(A)
+read(B)
+B := B + 50
+write(B)
+
+Se não houvesse Transações nos
+
+SGBDs!!!
+
+● Mais de uma transação usando os mesmos dados quando:
+– Troca de contexto/transação antes do write (A) de T1
+– Queda do banco antes de write (B)
+
+read(A)
+A := A – 50
+write(A)
+read(B)
+B := B + 50
+write(B)
+Ti
+
+T1:
+read (A);
+A:=A-50;
+write(A);
+read(B);
+B:=B+50;
+write (B);
+
+T2:
+read (A);
+A:=A-150;
+write(A);
+read(B);
+B:=B+150;
+write (B);
+
+Valores Iniciais
+A: 200
+B: 100
+
+Transação
+
+● É delimitada pelas declarações:
+– begin transaction
+– commit ou rollback
+● Do ponto de vista do SGBD, uma transação é uma
+sequência de operações que são tratadas como um
+bloco único e indivisível (atômico) no que se refere à
+sua recuperação.
+
+Transações em SQL
+
+● Por default, todo comando individual é considerado uma
+transação
+– exemplo:
+DELETE FROM Pacientes
+exclui todas ou não exclui nenhuma tupla de pacientes mantendo o BD consistente
+● Os comandos realmente envolvidos na Transação são:
+– Update, Delete e Insert
+● SQL Padrão (SQL-92)
+– SET TRANSACTION
+● inicia e configura características de uma transação
+– COMMIT [WORK]
+● encerra a transação (solicita efetivação das suas ações)
+– ROLLBACK [WORK]
+● solicita que as ações da transação sejam desfeitas
+
+Propriedades de uma Transação
+
+● As transações devem ser executadas pelos SGBDs de
+maneira a evitar que problemas ocorram.
+● As ações que compões uma transação devem possuir
+um conjunto de propriedades que são normalmente
+referidas como propriedades ACID.
+Atomicidade
+Consistência
+Isolamento
+Durabilidade
+
+Atomicidade
+
+● Esta propriedade garante que todas as operações na
+transação serão executadas ou nenhuma será.
+● Uma transação é uma unidade indivisível, não pode ser
+executada parcialmente
+● Isto evita que falha ocorridas, possam deixar o banco
+de dados inconsistentes.
+
+Consistência
+
+● Possui dois aspectos: A consistência do banco dados e
+a consistência da própria transação.
+● Uma transação deve ser um programa correto e suas
+ações não devem resultar em violações das restrições
+de integridade definidas para o banco de dados.
+● Uma transação leva o banco de um estado consistente
+a outro estado também consistente
+
+Isolamento
+
+● Significa que, mesmo no caso de transações executadas
+concorrentemente, o resultado final é igual ao obtido com a
+execução isolada de cada uma delas.
+● Outras transações não devem “enxergar” alterações feitas
+por uma transação até que ela seja completada.
+● A observância desta propriedade das transações pelos
+SGBDs impede a ocorrência dos problemas de acesso a
+dados.
+
+Durabilidade
+
+● Significa que os resultados de uma transação, caso ela seja
+concluída com sucesso, devem ser persistentes. Mesmo se
+depois houver uma falha no sistema.
+● Quando uma transação for confirmada ela deve ser
+permanente não podendo ser desfeita
+
+
+Transações no PostgreSQL
+
+Tabela Departamento Tabela Funcionario
+
+Com as tabelas na situação acima, o que acontece se executarmos os comandos abaixo,
+um por vez?
+
+INSERT INTO departamento(cod, descricao, localizacao)
+VALUES (20, 'ALMOXARIFADO','CURITIBA');
+INSERT INTO funcionario(cod, nome, cargo, dtcontratacao, codgerente, salario, coddepartamento)
+VALUES (1000, 'JOÃO','CONTADOR', '01/03/2007', null, 2000, 20);
+INSERT INTO funcionario(cod, nome, cargo, dtcontratacao, codgerente, salario, coddepartamento)
+VALUES (1000, 'PEDRO','COORDENADOR', '11/04/2007', null, 3000, 20);
+
+Transações no PostgreSQL
+
+Tabela Departamento Tabela Funcionario
+E agora? Mantendo a situação acima e executando os comandos abaixo, também um por vez!
+Observe que estão dentro de um bloclo de instruções entre as instruções BEGIN e COMMIT!
+
+BEGIN;
+INSERT INTO departamento(cod, descricao, localizacao)
+VALUES (20, 'ALMOXARIFADO','CURITIBA');
+INSERT INTO funcionario(cod, nome, cargo, dtcontratacao, codgerente, salario, coddepartamento)
+VALUES (1000, 'JOÃO','CONTADOR', '01/03/2007', null, 2000, 20);
+INSERT INTO funcionario(
+cod, nome, cargo, dtcontratacao, codgerente, salario, coddepartamento)
+VALUES (1000, 'PEDRO','COORDENADOR', '11/04/2007', null, 3000, 20);
+COMMIT;
+
+Transações no PostgreSQL
+
+Tabela Departamento Tabela Funcionario
+E agora? Mantendo a situação acima e executando os comandos abaixo, também um por vez!
+Observe que estão dentro de um bloclo de instruções entre as instruções BEGIN e COMMIT!
+
+BEGIN;
+INSERT INTO departamento(cod, descricao, localizacao)
+VALUES (20, 'ALMOXARIFADO','CURITIBA');
+INSERT INTO funcionario(cod, nome, cargo, dtcontratacao, codgerente, salario, coddepartamento)
+VALUES (1000, 'JOÃO','CONTADOR', '01/03/2007', null, 2000, 20);
+INSERT INTO funcionario(
+cod, nome, cargo, dtcontratacao, codgerente, salario, coddepartamento)
+VALUES (1000, 'PEDRO','COORDENADOR', '11/04/2007', null, 3000, 20);
+ROLLBACK;
+
+Bloqueio (Lock)
+
+● Quando um registro esta sendo alterado por uma transação, o SGBD
+irá bloquear o seu acesso para uma segunda alteração.
+– INSERT, UPDATE e DELETE exigem o controle por LOCK
+– O bloqueio só será liberado após um commit ou rollback
+– O bloqueio permitirá que outras transações leiam as informações
+– O SGBD usa estratégias para controlar bloqueio de novas alterações:
+● Bloquear a tabela toda! (Primeiros SGBDs utilizavam este recurso)
+● Bloquear um conjunto de linhas próximas (páginas)! (Melhorando desempenho)
+● Bloquear apenas a linha afetada pelo comando! (Melhor desempenho e a Abordagem +
+usada hoje em dia)
+● Bloquear as colunas afetadas! (útil apenas nos updates, poucos SGBDs implementam)
+
+
