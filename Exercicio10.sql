@@ -63,11 +63,5 @@ INSERT INTO funcionario (cod, nome, cargo, dtcontratacao, salario) VALUES
 -- Teste de rollback para descartar alterações
 ROLLBACK;
 
+
 Finaliado 
-
-
-
-
-
-
-
