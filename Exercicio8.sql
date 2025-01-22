@@ -79,4 +79,5 @@ WHERE EXISTS (
 )
 AND a.nome != 'Maria';
 
+
 Finalizado
