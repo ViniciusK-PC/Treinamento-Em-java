@@ -1,0 +1,147 @@
+Consultas Aninhadas (Subconsultas)
+
+● Uma subconsulta é uma instrução SELECT adicionada
+dentro de uma instrução SELECT, INSERT, DELETE,
+ou UPDATE ou dentro de outra subconsulta.
+
+● Precisamos de subconsultas, para resolver problemas
+mais complexos, que não são atendidos pelos
+mecanismos vistos até o momento.
+
+Problema
+
+● Como obter os funcionários que recebem salário acima
+da média salarial dos funcionários?
+– É necessário duas consultas. Uma para calcular o salário
+médio de todos os funcionários e outra para descobrir quem
+recebe mais que o valor da primeira consulta.
+● Isto pode ser feito manualmente em duas execuções de consulta ao
+SGBD.
+● Ou em uma única consulta, que use subconsulta.
+
+Comportamento
+
+● A subconsulta é executada uma vez antes da consulta
+principal
+● O resultado da subconsulta é usado pela consulta
+principal
+● Pode existir subconsulta da subconsulta
+
+● As subconsultas devem estar entre parênteses e estar
+no lado direito do operador de comparação
+● Subconsultas não podem possuir claúsula ORDER BY
+
+Sintaxe
+
+SELECT * FROM tabela
+WHERE
+[ [NOT] EXISTS (subconsulta)]
+[ coluna OperadorUnicaLinhas (subconsulta)]
+[ coluna [NOT] OperadorVariasLinhas (subconsulta)];
+
+Classes de Operadores em
+
+Subconsultas
+
+● Operadores de comparação de uma única linha
+>,=,<,<>,>=,<=
+– Operadores de uma única linha devem ser usados com
+subconsultas que retornem uma única linha.
+
+● Operadores de várias linhas
+IN, [>,=,<,<>,>=,<=] ANY, [>,=,<,<>,>=,<=] ALL
+– Operadores de várias linhas são usados com subconsultas que
+podem retornar mais de uma linha.
+– Podemos usar o operador NOT para inverter a operação.
+
+Subconsultas de uma única linha
+
+● Como obter os funcionários que recebem salário
+acima da média salarial dos funcionários?
+
+SELECT cod,nome,salario FROM funcionario
+WHERE salario > (SELECT AVG(salario)
+FROM funcionario);
+
+Subconsultas de Várias Linhas
+
+● Localize os funcionários que recebem o mesmo salário
+que o salário mínimo dos departamentos.
+OPERADOR SIGNIFICADO
+IN Igual a qualquer membro da lista
+ANY Compara o valor a cada valor retornado pela Subconsulta
+ALL Compara o valor a todo valor retornado pela Subconsulta
+
+SELECT f.cod,f.nome,f.salario
+FROM f.funcionario
+WHERE f.salario IN (SELECT MIN(salario)
+FROM funcionario
+GROUP BY coddepartamento);
+
+V al o r 1 O p e r a d o r V al o r 2 Re s u l t a d o
+3 > ANY (2 ,5 ,7) Ce rto
+3 = ANY (2 ,5 ,7) FALS O
+3 = ANY (2 ,3,5 ,7) Ce rto
+3 > ALL (2 ,5 ,7) FALS O
+3 < ALL (5 ,6 ,7) FALS O
+
+Subconsultas de Várias Linhas
+
+● Quais os funcionários que possuem salário menor que o salário médio
+de algum departamento?
+● Quais os funcionários que possuem salário menor que o salário médio
+de todos os departamentos?
+
+SELECT f.cod,f.nome,f.salario,f.coddepartamento
+FROM funcionario AS f
+WHERE f.salario < ANY (SELECT AVG(salario)
+FROM funcionario
+
+GROUP BY coddepartamento);
+
+SELECT f.cod,f.nome,f.salario,f.coddepartamento
+FROM funcionario AS f
+WHERE f.salario < ALL (SELECT AVG(salario)
+FROM funcionario
+GROUP BY coddepartamento);
+
+ANY e ALL são usados em conjunto com:
+>,=,<,<>,>=,<=
+
+Exists
+
+● Permite correlacionar linhas da subconsulta com linhas da
+consulta principal.
+● Em outras palavras, a consulta interna contém uma referência
+para tabela da consulta externa.
+● Se a subconsulta retornar uma ou mais linhas, a sentença
+EXISTS é considerada verdadeira.
+● Podemos inverter o resultado usando NOT EXISTS
+
+SELECT * FROM tabela
+WHERE
+[ [NOT] EXISTS (subconsulta)]
+
+Como usar?
+
+● Apresentar todos os gerentes que possuem subordinados.
+
+SELECT cod,nome
+FROM funcionario AS gerente
+WHERE EXISTS (SELECT 0
+FROM funcionario
+WHERE funcionario.codgerente=gerente.cod);
+
+Exercícios
+
+1) Crie uma consulta para exibir o nome e a data de admissão de todos os funcionários no mesmo departamento que
+Maria, excluindo Maria. (Faça de duas formas, uma usando o IN e outra usando EXISTS)
+2) Crie uma consulta para exibir o código e o nome de todos os funcionários que recebem mais que o salário médio.
+Classifique os resultados, por salário, em ordem decrescente.
+3) Crie uma consulta que exiba o código e o nome de todos os funcionários que trabalhem em um departamento,
+onde exista um funcionário que possua a letra 'W' no nome.
+4) Crie uma consulta para exibir o nome, a data de admissão e o salário de todos os funcionários que ganhem mais
+que a média de salário de todos os departamentos.
+5) Selecione todos os gerentes que possuem efetivamente subordinados.
+6) Selecione todos os colegas de 'MARIA' em todas as disciplinas que ela esta matriculada, de acordo com a
+“matricula” realizada na tabela aluno_disciplina. (Faça de duas formas, uma usando o IN e outra usando EXISTS)
