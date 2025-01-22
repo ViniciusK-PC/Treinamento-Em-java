@@ -69,4 +69,5 @@ INSERT INTO aluno (nome, idade) VALUES
 ('Clara', 30);
 
 
+
 Finalizado
