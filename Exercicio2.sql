@@ -48,3 +48,5 @@ CREATE TABLE departamento (
     descricao VARCHAR(200) NOT NULL,
     sigla VARCHAR(10)
 );
+
+
