@@ -1,0 +1,91 @@
+Banco de Dados e C
+
+● Para serem uteis, os Bancos de Dados precisam permitir que
+programas feitos em outras linguagens consigam acessá-los.
+● A forma de acesso muda de linguagem para linguagem.
+– No C/C++ não existe uma forma padronizada de acesso
+● O código é feito especificamente para o Banco de Dados
+(Oracle, Postgresql, MySql, DB2, SqlServer, etc)
+
+● Postgresql e C
+– https://www.postgresql.org/docs/9.6/static/client-interfaces.html
+● Libpq
+– Bibliotecas externas
+● ECPG
+– Pré-processamento
+
+LIBPQ
+
+● Uso de arquivos externos e já compilados para o SO envolvido.
+– Cabeçalho(s)
+● Arquivo(s) .h
+– No postgresql = libpq-fe.h
+– Biblioteca(s) Dinâmica(s)
+● Arquivo(s) .so ou .dll
+– No postgresql as bibliotecas na pasta lib do diretório de instalação
+
+Criação de 1 executável C
+
+● http://www.pontov.com.br/site/cpp/46-conceitos-basicos/155-como-usar-bibliotecas-cc
+● http://pt.kioskea.net/faq/10834-a-compilacao-e-os-modulos-em-c-e-em-c
+● http://www.deinf.ufma.br/~acmo/grad/lp1/portabty.html
+
+
+C, Netbeans e Linux
+
+● Linux
+– Instalar o módulo de desenvolvimento do Postgresql.
+● apt-get install postgresql-server-dev-9.3
+– Localizar local dos cabeçalhos
+● pg_config --includedir
+– Localizar local das bibliotecas
+● pg_config --libdir
+
+● Netbeans
+– Configurar Compilar e Linker nas propriedades do projeto
+
+
+Código C
+● http://www.postgresql.org/docs/9.3/static/libpq.html
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <libpq-fe.h>
+int main(int argc, char** argv) {
+PGconn *conn;
+PGresult *res;
+int rec_count;
+int row;
+int col;
+conn = PQconnectdb("dbname=BaseUCPel host=localhost user=aluno password=qpwo");
+if (PQstatus(conn) == CONNECTION_BAD) {
+printf("Falha na conexão");
+exit(0);
+}
+res = PQexec(conn, "select codigo,nome,sigla from estado order by sigla");
+if (PQresultStatus(res) != PGRES_TUPLES_OK) {
+printf("Nenhuma linha retornada!");
+exit(0);
+}
+rec_count = PQntuples(res);
+printf("Recebido [%d] registros.\n", rec_count);
+for (row = 0; row < rec_count; row++) {
+for (col = 0; col < 3; col++) {
+printf("%s\t", PQgetvalue(res, row, col));
+}
+printf("\n");
+}
+PQclear(res);
+PQfinish(conn);
+return (EXIT_SUCCESS);
+}
+
+Exercícios
+
+1) Construa aplicações para realizar o CRUD na tabela Estados
+CRUD = Create, Retrieve, Update, Delete (Inserir, Retornar, Atualizar, Deletar)
+
+2) Pesquise na Internet de códigos que usam C para acessar outros
+bancos
+
+Finalizado
