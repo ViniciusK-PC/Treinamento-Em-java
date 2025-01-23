@@ -42,6 +42,6 @@ CREATE TABLE departamento (
 );
 
 
+
+
 -- FInalizado
-
-
